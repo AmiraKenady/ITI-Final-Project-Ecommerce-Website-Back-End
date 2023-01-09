@@ -1,0 +1,88 @@
+﻿@using X.PagedList.Web.Common
+@model IPagedList<ProductsVM>
+@{
+    ViewData["Title"] = SharedLocalizer["SelledProducts"];
+    var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+}
+
+  
+
+<div class="table-responsive">
+    <table id="prodcuts" class="table table-hover">
+        <thead>
+            <tr>
+          
+                <th>
+                    @SharedLocalizer["Name"]
+                </th>
+                <th>
+                   @SharedLocalizer["disc"]
+                </th>
+                <th>
+                     @SharedLocalizer["price"]
+                </th>
+                <th>                    
+                      @SharedLocalizer["Category"]
+                </th>
+                <th>
+                    @SharedLocalizer["Quantity"]
+                </th>
+                <th>
+                   @SharedLocalizer["Discount"]
+                </th>
+                <th>
+                      @SharedLocalizer["Delete"]
+                </th>
+                  <th>
+                      @SharedLocalizer["Edit"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.ToList<ProductsVM>())
+            {
+                String d = "delete" + product.No.ToString();
+                ConfirmModel y = new ConfirmModel()
+                {
+                    Id = product.No,
+                    TagID = d,
+                    Controller= "Product",
+                    Action = "ConfirmDelete"
+
+                };
+                <tr>
+                    @if (Culture == "ar-EG")
+                    {
+                        <td>@product.NameAr</td>
+                        <td>@product.DescriptionAr</td>
+                        <td>@product.Price</td>
+                        <td>@product.CategoryAr</td>
+                        <td>@product.Qauntity</td>
+                        <td>@product.Discount</td>
+                    }
+                    else
+                    {
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td>@product.Price</td>
+                        <td>@product.Category</td>
+                        <td>@product.Qauntity</td>
+                        <td>@product.Discount</td>
+                    }
+                   
+                    <td>
+                        @*<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@d">@SharedLocalizer["Delete"]</button>*@
+
+                        <a asp-action="Delete" asp-controller="Product" asp-route-Id="@product.No" class="btn btn-danger">@SharedLocalizer["Delete"]</a></td>
+                    <td><a asp-action="Edit" asp-controller="Product" asp-route-Id="@product.No" class="btn btn-secondary">@SharedLocalizer["Edit"]</a></td>
+
+                    <partial name="Confirm" model="y"></partial>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+     @Html.PagedListPager(Model, pageIndex => Url.Action("GetAdminProduct", new { pageIndex  }))
+</div>
+

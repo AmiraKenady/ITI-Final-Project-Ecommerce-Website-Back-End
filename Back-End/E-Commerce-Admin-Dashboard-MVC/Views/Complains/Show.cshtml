@@ -1,0 +1,20 @@
+﻿@model Complaints 
+
+<div class="card" style="width: 20rem;">
+  @*<img src="..." class="card-img-top" alt="...">*@
+  <div class="card-body">
+
+        <span class="font-weight-bold me-2"> @SharedLocalizer["Customer Name"]:</span>@Model.Buyer.First_Name
+        <span class="font-weight-bold me-2">
+            @SharedLocalizer["Seller Name"]:
+        </span>@Model.Seller.First_Name
+            <span class="font-weight-bold me-2">
+            @SharedLocalizer["Product Name"] :
+        </span>@Model.Product.Name @*Not Avilable*@
+        <span class="font-weight-bold me-2">
+            @SharedLocalizer["Description"]:
+        </span>
+    <p class="card-text">@Model.Noted</p>
+        <a href="#" class="btn btn-primary">@SharedLocalizer["Reply"]</a>
+  </div>
+</div>

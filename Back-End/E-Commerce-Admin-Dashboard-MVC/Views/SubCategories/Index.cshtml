@@ -1,0 +1,73 @@
+﻿@*@model List<SubcategoryModelView>*@
+@model IPagedList<SubcategoryModelView>
+@{
+    var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+}
+
+<div class="card-body">
+    <h4 class="card-title"></h4>
+    <p class="card-description">
+         <code></code>
+    </p>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>@SharedLocalizer["Name"]</th>
+                    <th>@SharedLocalizer["Category"]</th>
+                    <th>@SharedLocalizer["Control"]</th>
+
+                </tr>
+            </thead>
+            <tbody id="data">
+                @{
+                    int i = 0;
+                }
+                @foreach (var subcat in Model)
+                {
+                    String d = "delete" + subcat.Id.ToString();
+                    String e = "edite" + subcat.Id.ToString();
+                    ConfirmModel y = new ConfirmModel()
+                {
+                    Id = subcat.Id,
+                    TagID = d,
+                    Controller= "SubCategories",
+                    Action = "DeleteSubCategories"
+
+                };
+                    i++;
+                    <tr>
+                        <td>@i</td>
+                        @if (Culture == "ar-EG")
+                        {
+                            <td>@subcat.BrandNameAr</td>
+                            <td>@subcat.CategoryNameAr</td>
+                        }
+                        else
+                        {
+                            <td>@subcat.BrandName</td>
+                            <td>@subcat.CategoryName</td>
+                        }
+                      
+                        
+                        <td>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@d">@SharedLocalizer["Delete"]</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#@e">@SharedLocalizer["Edit"]</button>
+                            <a class="btn btn-info" asp-controller="SubCategories" asp-action="GetProductBySubcategory" asp-route-CatId="@subcat.Id">@SharedLocalizer["Show Product"]</a>
+
+                        </td>
+                       
+                    </tr>
+                    <partial name="_Edit" model="subcat"></partial>
+                    <partial name="Confirm" model="y"></partial>
+                }
+
+
+            </tbody>
+        </table>
+        @Html.PagedListPager(Model, pageIndex => Url.Action("index", new { pageIndex  }))
+    </div>
+</div>
+

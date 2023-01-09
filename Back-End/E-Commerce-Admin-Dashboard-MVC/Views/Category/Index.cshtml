@@ -1,0 +1,102 @@
+﻿
+@*@model List<CategoryCreateModel>*@
+@model IPagedList<CategoryCreateModel>
+
+
+@{
+    int i = 0;
+    var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+}
+
+<div id="data" class="card-body">
+    <h4 class="card-title"></h4>
+    <p class="card-description">
+        <form asp-controller="Category" asp-action="SearchNameCategory">
+        <div class="input-group">
+                <input name="Name" class="form-control border-end-0 border rounded-pill" type="search" value="" placeholder="@SharedLocalizer["Search"]" id="example-search-input">
+            <span class="input-group-append">
+                
+                <button id="btn" class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+        </form>
+    </p>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    @*<th>Id</th>*@
+                    <th>@SharedLocalizer["Category"]</th>
+                    <th>@SharedLocalizer["disc"]</th>
+                    <th>@SharedLocalizer["CreatedAt"]</th>
+                    <th>@SharedLocalizer["ModefiedAt"]</th>
+                    <th>@SharedLocalizer["Control"]</th>
+                </tr>
+            </thead>
+            <tbody id="TableBody" >
+               
+                @foreach (var cat in Model.ToList())
+                    {
+                        String d = "delete" + cat.Id.ToString();
+                        String e = "edite" + cat.Id.ToString();
+                        ConfirmModel y = new ConfirmModel()
+                            {
+                                Id = cat.Id,
+                                TagID = d,
+                                Controller= "Category",
+                                Action = "DeleteCategory"
+
+                            };
+                        
+                        <tr>
+                        <td>@(++i)</td>
+                        @*<td>@cat.Id</td>*@
+                        @if (Culture == "ar-EG")
+                        {
+                            <td>@cat.NameAr</td>
+                            <td>@cat.DescriptionAr</td>
+                        }
+                        else
+                        {
+                            <td>@cat.Name</td>
+                            <td>@cat.Description</td>
+                        }
+                        
+                        <td>@cat.created_at</td>
+                        <td>@cat.modified_at</td>
+                            <td >
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#@d">@SharedLocalizer["Delete"]</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#@e">@SharedLocalizer["Edit"]</button>
+                            <a class="btn btn-info w-50" asp-controller="SubCategories" asp-action="index" asp-route-Id="@cat.Id">@SharedLocalizer["Show Subcategory"]</a>
+
+                        </td>
+                        
+                    </tr>
+                    <partial name="_Edit" model="cat"></partial>
+                     <partial name="Confirm" model="y"></partial>
+                }
+               
+              
+            </tbody>
+        </table>
+       
+    </div>
+</div>
+@Html.PagedListPager(Model, pageIndex => Url.Action("index", new { pageIndex  }))
+
+<script>
+    async function testFakeApi() {
+        try {
+            var res = await fetch("https://jsonplaceholder.typicode.com/users");
+            var data = await res.json();
+            console.log(data[0].name);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+</script>

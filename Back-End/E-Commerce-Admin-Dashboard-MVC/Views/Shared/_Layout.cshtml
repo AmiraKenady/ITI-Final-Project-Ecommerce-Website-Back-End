@@ -1,0 +1,57 @@
+﻿@{
+    var Culture = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="@SharedLocalizer["Direction"]">
+       <partial name="partials/_head"></partial>
+
+<body>
+    <div class="container-scroller">
+        <partial name="partials/_navbar"></partial>
+
+      
+        <div class="container-fluid page-body-wrapper mt-5">
+            <partial name="partials/_settings-panel"></partial>
+            <partial name="partials/_sidebar"></partial>
+            <div class="main-panel">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+                @*<partial name="partials/_footer"></partial>*@
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/js/site.js" asp-append-version="true"></script>*@
+    <!-- base:js -->
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/template.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <script src="~/~/lib/font-awesome/js/all.js"></script>
+
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="~/js/dashboard.js"></script>
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <script src="https://kit.fontawesome.com/59a9cf4a82.js" crossorigin="anonymous"></script>
+    <!-- End custom js for this page-->
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

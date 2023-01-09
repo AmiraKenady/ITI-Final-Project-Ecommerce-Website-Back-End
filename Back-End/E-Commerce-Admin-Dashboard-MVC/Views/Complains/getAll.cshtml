@@ -1,0 +1,59 @@
+﻿
+@model IPagedList<Complaints>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>@SharedLocalizer["Product Name"]</th>
+            <th>@SharedLocalizer["Complain"]</th>
+            <th>@SharedLocalizer["Status"]</th>
+            <th>@SharedLocalizer["Seller Name"]</th>
+            <th>@SharedLocalizer["Customer Name"]</th>
+            <th>@SharedLocalizer["Complain Date"]</th>
+            <th>@SharedLocalizer["Take Action"]</th>
+      </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ToList<Complaints>())
+        {
+            <tr>
+                
+               <td>@item.Product.Name</td>
+               @*<td>Not Avilable</td> *@
+                 <td>@item.Noted</td>
+                @if (item.Progress==0)
+                {
+                    <td>Unread</td>
+                }
+                else if(item.Progress==1)
+                {
+                    <td>Pending</td>
+                }
+                else{
+                    <td>Solved</td>
+                }
+                
+                <td>@item.Seller.First_Name   </td>
+                <td>@item.Buyer.First_Name</td>
+                <td>@item.Date</td>
+                @if (item.Progress == 0)
+                {
+                    <td>
+                        <a class="btn btn-danger" asp-action="Show" asp-controller="Complains" asp-route-id="@item.Id">@SharedLocalizer["Show"]</a>
+                    </td>
+                }
+                else if (item.Progress == 1)
+                {
+                    <td>
+                        <a class="btn btn-danger" asp-action="" asp-controller="Complains" asp-route-id="@item.Id">@SharedLocalizer["Reply"]</a>
+                    </td>
+                }
+                else
+                {
+                    <td>No Action Needed</td>
+                }
+            </tr>
+
+        }
+    </tbody>
+  </table>
+  @Html.PagedListPager(Model, num => Url.Action("getAll", new { num  }))
